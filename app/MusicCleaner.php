@@ -98,11 +98,12 @@ class MusicCleaner
     }
 
     /**
+     * @param bool $extenions
      * @return \Illuminate\Support\Collection
      */
-    public function cleanFilenames()
+    public function cleanFilenames($extenions = false)
     {
-        $filesToClean = $this->listFiles(false, $this->stringsToClean());
+        $filesToClean = $this->listFiles($extenions, $this->stringsToClean());
         $cleanedFiles = collect();
         $filesToClean->each(function ($fileToClean) use (&$cleanedFiles) {
             if ( $this->cleanFilename($fileToClean) ) {
@@ -150,7 +151,7 @@ class MusicCleaner
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function getExtensions()
+    public function getFileExtensionsFromFiles()
     {
         $files = $this->listFiles();
         $fileExtensions = collect();
@@ -168,16 +169,17 @@ class MusicCleaner
      */
     private function folderPath()
     {
-
         return config('musicfolder.folder_path');
     }
 
     /**
      * @return \Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
      */
-    private function fileExtensions()
+    public function fileExtensions()
     {
-        return config('musicfolder.file_extensions');
+        return collect(array_filter(array_map('trim', explode(',', config('musicfolder.file_extensions'))), function($string) {
+            return ! empty($string);
+        }));
     }
 
 }

@@ -2,8 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\MusicCleaner;
 use Illuminate\Console\Command;
 
+/**
+ * Class CleanID3Tags
+ * @package App\Console\Commands
+ */
 class CleanID3Tags extends Command
 {
     /**
@@ -18,15 +23,19 @@ class CleanID3Tags extends Command
      *
      * @var string
      */
-    protected $description = '';
+    protected $description = 'Clean junk from ID3 tags.';
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
     public function handle()
     {
-
+        $mc = new MusicCleaner;
+        $extensions = $mc->fileExtensions();
+        $files = $mc->listFiles($extensions);
+        $files->each(function ($file) {
+            #dd(exec(sprintf('ffprobe "%s"', $file)));
+            #dd(exec(sprintf('ffprobe "%s"', $file)));
+        });
     }
 }

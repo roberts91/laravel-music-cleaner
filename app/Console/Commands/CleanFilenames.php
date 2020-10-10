@@ -6,7 +6,10 @@ use App\MusicCleaner;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
-
+/**
+ * Class CleanFilenames
+ * @package App\Console\Commands
+ */
 class CleanFilenames extends Command
 {
     /**
@@ -29,7 +32,7 @@ class CleanFilenames extends Command
     public function handle()
     {
         $mc = new MusicCleaner;
-        $cleanedFiles = $mc->cleanFilenames();
+        $cleanedFiles = $mc->cleanFilenames($mc->fileExtensions());
         if ( $cleanedFiles->isEmpty() ) {
             $this->error(sprintf('No files matched %s %s.', Str::plural('string', count($mc->stringsToClean())), '"' . implode('", "', $mc->stringsToClean()) . '"'));
             return;

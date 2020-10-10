@@ -5,6 +5,10 @@ namespace App\Console\Commands;
 use App\MusicCleaner;
 use Illuminate\Console\Command;
 
+/**
+ * Class FindFileExtesions
+ * @package App\Console\Commands
+ */
 class FindFileExtesions extends Command
 {
     /**
@@ -27,7 +31,7 @@ class FindFileExtesions extends Command
     public function handle()
     {
         $mc = new MusicCleaner;
-        $extensions = $mc->getExtensions();
+        $extensions = $mc->getFileExtensionsFromFiles();
         $this->info(sprintf('Found %s extensions in files:', $extensions->count()));
         $extensions->each(function ($extension) {
             $this->info($extension);
